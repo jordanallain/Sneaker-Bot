@@ -9,13 +9,9 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 source = requests.get('https://sneakernews.com/release-dates/').text
-
 soup = BeautifulSoup(source, 'lxml')
-
 release_section = soup.find('div', {'class': 'sneaker-con-main'})
-
 releases = release_section.findAll('div', {'class': 'releases-box'})
-
 cleaned_releases = []
 
 for release in releases:
@@ -45,8 +41,7 @@ async def on_message(message):
         if message.content == 'lil sneaker bby':
             embed = discord.Embed(title=shoe['name'], description=shoe['color'], url=shoe['page'])
             embed.set_image(url=shoe['image_url'])
-            await message.channel.send('-------------------')
+            embed.set_footer(text='Releases on ' + shoe['release_date'] + ' for ' + shoe['price'])
             await message.channel.send(embed=embed)
-            await message.channel.send('Releases on ' + shoe['release_date'] + ' for ' + shoe['price'])
 
 client.run(TOKEN)
